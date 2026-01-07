@@ -38,6 +38,8 @@ button {
   cursor: pointer;
 }
 </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
 
 <body>
@@ -60,6 +62,8 @@ button {
 
 <center>
 <button onclick="saveAttendance()">Save Attendance</button>
+<button onclick="exportPDF()" style="background:#3b82f6;">Share as PDF</button>
+
 </center>
 
 <script>
@@ -175,8 +179,47 @@ function saveAttendance() {
   localStorage.setItem("attendance_" + date, JSON.stringify(records));
   alert("Attendance saved successfully!");
 }
+  function exportPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const date = document.getElementById("date").value;
+  doc.setFontSize(14);
+  doc.text("Class Attendance", 14, 15);
+  doc.setFontSize(10);
+  doc.text("Date: " + date, 14, 22);
+
+  let y = 30;
+  doc.setFontSize(9);
+
+  // table header
+  doc.text("Roll", 14, y);
+  doc.text("Name", 30, y);
+  doc.text("Status", 150, y);
+  y += 6;
+
+  document.querySelectorAll("#tbody tr").forEach((row, i) => {
+    const roll = students[i].roll;
+    const name = students[i].name || "";
+    const status = row.querySelector("select").value;
+
+    if (y > 280) {
+      doc.addPage();
+      y = 20;
+    }
+
+    doc.text(String(roll), 14, y);
+    doc.text(name, 30, y);
+    doc.text(status, 150, y);
+    y += 6;
+  });
+
+  doc.save("Attendance_" + date + ".pdf");
+}
+
 </script>
 
 </body>
 </html>
+
 
