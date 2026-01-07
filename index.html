@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Attendance - 70 Members</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #fff;
+  padding: 20px;
+}
+h1 { text-align: center; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: #111827;
+}
+th, td {
+  border: 1px solid #1f2937;
+  padding: 8px;
+  text-align: center;
+}
+th {
+  background: #1f2937;
+}
+select {
+  padding: 5px;
+}
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #22c55e;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Class Attendance</h1>
+
+<label>Date: </label>
+<input type="date" id="date">
+
+<table>
+<thead>
+<tr>
+  <th>Roll No</th>
+  <th>Name</th>
+  <th>Status</th>
+</tr>
+</thead>
+<tbody id="tbody"></tbody>
+</table>
+
+<center>
+<button onclick="saveAttendance()">Save Attendance</button>
+</center>
+
+<script>
+// --------- 70 MEMBERS LIST ----------
+const students = [
+  { roll: 1, name: "Student 1" },
+  { roll: 2, name: "Student 2" },
+  { roll: 3, name: "Student 3" },
+  // 👉 continue till 70
+];
+
+// Auto-generate till 70 (easy way)
+for (let i = 4; i <= 70; i++) {
+  students.push({ roll: i, name: "Student " + i });
+}
+
+const tbody = document.getElementById("tbody");
+const dateInput = document.getElementById("date");
+dateInput.value = new Date().toISOString().slice(0,10);
+
+// Render table
+students.forEach(s => {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td>${s.roll}</td>
+    <td>${s.name}</td>
+    <td>
+      <select>
+        <option value="Present">Present</option>
+        <option value="Absent">Absent</option>
+      </select>
+    </td>
+  `;
+  tbody.appendChild(tr);
+});
+
+// Save attendance
+function saveAttendance() {
+  const date = dateInput.value;
+  const records = [];
+
+  document.querySelectorAll("#tbody tr").forEach((row, i) => {
+    records.push({
+      roll: students[i].roll,
+      name: students[i].name,
+      status: row.querySelector("select").value,
+      date: date
+    });
+  });
+
+  localStorage.setItem("attendance_" + date, JSON.stringify(records));
+  alert("Attendance saved successfully!");
+}
+</script>
+
+</body>
+</html>
