@@ -63,18 +63,79 @@ button {
 </center>
 
 <script>
-// --------- 70 MEMBERS LIST ----------
+// --------- STUDENTS (1–70) ----------
 const students = [
-  { roll: 1, name: "Student 1" },
-  { roll: 2, name: "Student 2" },
-  { roll: 3, name: "Student 3" },
-  // 👉 continue till 70
+  { roll: 1, name: "" },
+  { roll: 2, name: "Tejaswi" },
+  { roll: 3, name: "Addanki Deepika" },
+  { roll: 4, name: "A. Jaya Raghava" },
+  { roll: 5, name: "Adil Shaik" },
+  { roll: 6, name: "" },
+  { roll: 7, name: "" },
+  { roll: 8, name: "A. Rishika Chowdary" },
+  { roll: 9, name: "Alladi Saniya" },
+  { roll: 10, name: "Allinagara Achyuth Reddy" },
+  { roll: 11, name: "Allu Tarun Rohit" },
+  { roll: 12, name: "Ambali Manikanta" },
+  { roll: 13, name: "A. Sri Sai Neeha" },
+  { roll: 14, name: "Vasavi" },
+  { roll: 15, name: "" },
+  { roll: 16, name: "Anegondhi Jagadeeswari" },
+  { roll: 17, name: "Vishnu Angati" },
+  { roll: 18, name: "Angothu Hrudayanjali" },
+  { roll: 19, name: "Annavarapu Pragathi" },
+  { roll: 20, name: "Mani" },
+  { roll: 21, name: "" },
+  { roll: 22, name: "" },
+  { roll: 23, name: "" },
+  { roll: 24, name: "" },
+  { roll: 25, name: "" },
+  { roll: 26, name: "" },
+  { roll: 27, name: "" },
+  { roll: 28, name: "" },
+  { roll: 29, name: "" },
+  { roll: 30, name: "Pavani" },
+  { roll: 31, name: "Akhila Bevara" },
+  { roll: 32, name: "" },
+  { roll: 33, name: "" },
+  { roll: 34, name: "" },
+  { roll: 35, name: "" },
+  { roll: 36, name: "" },
+  { roll: 37, name: "" },
+  { roll: 38, name: "" },
+  { roll: 39, name: "" },
+  { roll: 40, name: "B. Praneetha Reddy" },
+  { roll: 41, name: "" },
+  { roll: 42, name: "" },
+  { roll: 43, name: "" },
+  { roll: 44, name: "" },
+  { roll: 45, name: "" },
+  { roll: 46, name: "" },
+  { roll: 47, name: "" },
+  { roll: 48, name: "" },
+  { roll: 49, name: "" },
+  { roll: 50, name: "" },
+  { roll: 51, name: "CH. VL Anjanasathwika" },
+  { roll: 52, name: "Guru Datta Sai Challa" },
+  { roll: 53, name: "Chavadam Raja Sekhar" },
+  { roll: 54, name: "Cheemala Janaki Ram" },
+  { roll: 55, name: "Ch Ram Gopal" },
+  { roll: 56, name: "Chokka Syam Sri Kumar" },
+  { roll: 57, name: "" },
+  { roll: 58, name: "Chokka Syam Sri Kumar" },
+  { roll: 59, name: "" },
+  { roll: 60, name: "Chukka Yamini Madhumathi" },
+  { roll: 61, name: "" },
+  { roll: 62, name: "Eswar Adithya D" },
+  { roll: 63, name: "D Radhakrishna" },
+  { roll: 64, name: "" },
+  { roll: 65, name: "" },
+  { roll: 66, name: "" },
+  { roll: 67, name: "" },
+  { roll: 68, name: "" },
+  { roll: 69, name: "" },
+  { roll: 70, name: "" }
 ];
-
-// Auto-generate till 70 (easy way)
-for (let i = 4; i <= 70; i++) {
-  students.push({ roll: i, name: "Student " + i });
-}
 
 const tbody = document.getElementById("tbody");
 const dateInput = document.getElementById("date");
