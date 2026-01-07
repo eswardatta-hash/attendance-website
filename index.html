@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Attendance - 70 Members</title>
+
 <style>
 body {
   font-family: Arial, sans-serif;
@@ -10,7 +11,10 @@ body {
   color: #fff;
   padding: 20px;
 }
-h1 { text-align: center; }
+
+h1 {
+  text-align: center;
+}
 
 table {
   width: 100%;
@@ -18,17 +22,32 @@ table {
   margin-top: 20px;
   background: #111827;
 }
+
 th, td {
   border: 1px solid #1f2937;
   padding: 8px;
   text-align: center;
 }
+
 th {
   background: #1f2937;
 }
-select {
+
+/* Status colors */
+.status-select {
   padding: 5px;
+  font-weight: bold;
+  border-radius: 4px;
 }
+
+.status-present {
+  color: #22c55e; /* green */
+}
+
+.status-absent {
+  color: #ef4444; /* red */
+}
+
 button {
   margin-top: 15px;
   padding: 10px 20px;
@@ -37,14 +56,18 @@ button {
   font-weight: bold;
   cursor: pointer;
 }
-</style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
+button.pdf {
+  background: #3b82f6;
+}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
 
-<h1>Cse A SKILL ATTENDANCE</h1>
+<h1>CSE A SKILL ATTENDANCE</h1>
 
 <label>Date: </label>
 <input type="date" id="date">
@@ -62,12 +85,11 @@ button {
 
 <center>
 <button onclick="saveAttendance()">Save Attendance</button>
-<button onclick="exportPDF()" style="background:#3b82f6;">Share as PDF</button>
-
+<button class="pdf" onclick="exportPDF()">Share as PDF</button>
 </center>
 
 <script>
-// --------- STUDENTS (1–70) ----------
+// -------- STUDENTS ----------
 const students = [
   { roll: 1, name: "A.nikhila" },
   { roll: 2, name: "Tejaswi" },
@@ -90,7 +112,7 @@ const students = [
   { roll: 19, name: "Annavarapu Pragathi" },
   { roll: 20, name: "Manikishore" },
   { roll: 21, name: "abhinay" },
-  { roll: 22, name: "A.eswar " },
+  { roll: 22, name: "A.eswar" },
   { roll: 23, name: "b.pushpa" },
   { roll: 24, name: "NONE" },
   { roll: 25, name: "Prasanna" },
@@ -115,7 +137,7 @@ const students = [
   { roll: 44, name: "pravallika" },
   { roll: 45, name: "lahari" },
   { roll: 46, name: "santhosh" },
-  { roll: 47, name: " naga santhosh" },
+  { roll: 47, name: "naga santhosh" },
   { roll: 48, name: "bavya sri" },
   { roll: 49, name: "pavitra" },
   { roll: 50, name: "CH. VISHNU CR" },
@@ -136,7 +158,7 @@ const students = [
   { roll: 374, name: "tagore" },
   { roll: 376, name: "charan" },
   { roll: 377, name: "sumanth" },
-   { roll: 378, name: "kavya anajli" },
+  { roll: 378, name: "kavya anajli" },
   { roll: 379, name: "TARUN KUMAR" },
   { roll: 403, name: "MANI" },
   { roll: 409, name: "HEMANTH" }
@@ -144,7 +166,7 @@ const students = [
 
 const tbody = document.getElementById("tbody");
 const dateInput = document.getElementById("date");
-dateInput.value = new Date().toISOString().slice(0,10);
+dateInput.value = new Date().toISOString().slice(0, 10);
 
 // Render table
 students.forEach(s => {
@@ -153,14 +175,24 @@ students.forEach(s => {
     <td>${s.roll}</td>
     <td>${s.name}</td>
     <td>
-      <select>
-        <option value="Present">Present</option>
-        <option value="Absent">Absent</option>
+      <select class="status-select status-present" onchange="updateColor(this)">
+        <option value="P">P</option>
+        <option value="A">A</option>
       </select>
     </td>
   `;
   tbody.appendChild(tr);
 });
+
+// Change color based on selection
+function updateColor(select) {
+  select.classList.remove("status-present", "status-absent");
+  if (select.value === "A") {
+    select.classList.add("status-absent");
+  } else {
+    select.classList.add("status-present");
+  }
+}
 
 // Save attendance
 function saveAttendance() {
@@ -171,7 +203,7 @@ function saveAttendance() {
     records.push({
       roll: students[i].roll,
       name: students[i].name,
-      status: row.querySelector("select").value,
+      status: row.querySelector("select").value === "A" ? "Absent" : "Present",
       date: date
     });
   });
@@ -179,11 +211,13 @@ function saveAttendance() {
   localStorage.setItem("attendance_" + date, JSON.stringify(records));
   alert("Attendance saved successfully!");
 }
-  function exportPDF() {
+
+// Export PDF
+function exportPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
-  const date = document.getElementById("date").value;
+  const date = dateInput.value;
   doc.setFontSize(14);
   doc.text("Class Attendance", 14, 15);
   doc.setFontSize(10);
@@ -192,7 +226,6 @@ function saveAttendance() {
   let y = 30;
   doc.setFontSize(9);
 
-  // table header
   doc.text("Roll", 14, y);
   doc.text("Name", 30, y);
   doc.text("Status", 150, y);
@@ -200,7 +233,7 @@ function saveAttendance() {
 
   document.querySelectorAll("#tbody tr").forEach((row, i) => {
     const roll = students[i].roll;
-    const name = students[i].name || "";
+    const name = students[i].name;
     const status = row.querySelector("select").value;
 
     if (y > 280) {
@@ -216,11 +249,7 @@ function saveAttendance() {
 
   doc.save("Attendance_" + date + ".pdf");
 }
-
 </script>
 
 </body>
 </html>
-
-
-
